@@ -1,4 +1,4 @@
 module.exports = {
-  Client: require('./Client'),
-  Project: require('./Project')
+  ClientModel: require('./clientModel'),
+  ProjectModel: require('./projectModel')
 }
