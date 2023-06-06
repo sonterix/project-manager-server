@@ -51,12 +51,25 @@ const RootMutationType = new GraphQLObjectType({
         return newClient.save()
       }
     },
+    updateClient: {
+      type: ClientType,
+      args: {
+        id: { type: GraphQLNonNull(GraphQLID) },
+        name: { type: GraphQLString },
+        email: { type: GraphQLString },
+        phone: { type: GraphQLString }
+      },
+      resolve: (_, { id, name, email, phone }) => {
+        return ClientModel.findByIdAndUpdate(id, { $set: { name, email, phone } }, { new: true })
+      }
+    },
     deleteClient: {
       type: ClientType,
       args: {
         id: { type: GraphQLNonNull(GraphQLID) }
       },
-      resolve: (_, { id }) => {
+      resolve: async (_, { id }) => {
+        await ProjectModel.deleteMany({ clientId: id })
         return ClientModel.findByIdAndDelete(id)
       }
     },
